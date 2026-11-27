@@ -1,0 +1,11 @@
+# Stiker wa (bot WhatsApp)
+- Entry: index.js (ESM, package.json "type": "module"), Node 20. Dependency: @xbibzlibrary/whatsbibz 2.1.0, pino, qrcode, dotenv.
+- .env berisi BOT_NUMBER (dimuat lewat import 'dotenv/config'). Sesi di folder auth/ (useMultiFileAuthState).
+- Bot tersambung (nomor 62882022439896), pairing sudah selesai.
+- Perintah: .menu, !ping -> pong, !sticker (caption atau reply video) -> sticker bersuara 5 detik dari video (convertVideoToSoundSticker).
+- !stickerFT: foto (caption atau reply foto) + audio. Audio = audio yang di-reply, atau audio terakhir di chat itu (maks 10 menit, disimpan di Map recentAudio). Foto jadi WebP animasi 5 detik (ffmpeg libwebp_anim), audio jadi Ogg Opus 5 detik.
+- Semua sticker diberi EXIF pack dan author "Hanzala Saputra" (addExif), dikirim lewat sendSoundSticker (prepareWAMessageMedia + generateWAMessageFromContent + relayMessage).
+- Pesan fromMe hanya diproses di self-chat. Pesan dari orang lain diproses di chat mana pun. makeWASocket autoFollowChannel:false.
+- Patch library: node_modules/@xbibzlibrary/whatsbibz/lib/Utils/sound-sticker.js baris 179 fps 12 -> 24 (sed). Jika node_modules dipasang ulang, patch harus diulang.
+- Status HTTP di PORT 11308 (0.0.0.0).
+- Belum diuji end-to-end lewat WhatsApp: !sticker, !stickerFT dan EXIF nama pack (perlu kirim pesan sungguhan).
